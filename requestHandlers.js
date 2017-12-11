@@ -1,22 +1,31 @@
-var exec = require("child_process").exec;
+var querystring = require("querystring");
 
-function iniciar(res) {
-	console.log("Manipulador de peticion 'iniciar' ha sido llamado.");
+function iniciar(response, postData) {
+  console.log("Manipulador de peticion 'inicio' fue llamado.");
 
-	exec("find /", 
-		{ timeout: 10000, maxBuffer: 20000*1024 },
-		function(error, stdout, stderr){
-		res.writeHead(200, {"Content-Type": "text/html"});
-		res.write(stdout);
-		res.end();
-	});
+  var body = '<html>'+
+    '<head>'+
+    '<meta http-equiv="Content-Type" content="text/html" charset=UTF-8" />'+
+    '</head>'+
+    '<body>'+
+    '<form action="/subir" method="post">'+
+    '<textarea name="text" rows="20" cols="60"></textarea>'+
+    '<input type="submit" value="Submit text" />'+
+    '</form>'+
+    '</body>'+
+    '</html>';
+
+    response.writeHead(200, {"Content-Type": "text/html"});
+    response.write(body);
+    response.end();
 }
 
-function subir(res) {
-	console.log("Manipulador de peticion 'subir' ha sido llamado.");
-	res.writeHead(200, {"Content-Type": "text/html"});
-	res.write("<h1 style='text-align: center'>Hola Subir</h1>");
-	res.end();
+function subir(response, dataPosteada) {
+    console.log("Manipulador de peticion 'subir' fue llamado.");
+    response.writeHead(200, {"Content-Type": "text/html"});
+    response.write("<h1 style='text-align: center;'>Tu enviaste el texto</h1>" +
+    "<h2 style='text-align: center; color: #666;'>" + querystring.parse(dataPosteada)["text"]) + "</h2>";
+    response.end();
 }
 
 exports.iniciar = iniciar;
