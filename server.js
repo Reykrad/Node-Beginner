@@ -6,10 +6,11 @@ function iniciar(route, handle) {
 		var pathname = url.parse(req.url).pathname;
 		console.log("Peticion para " + pathname + " recibida.");
 		
-		res.writeHead(200, {"Content-Type": "text/html"});
-		var content = route(handle, pathname);
-		res.write(content);
-		res.end();
+		//res.writeHead(200, {"Content-Type": "text/html"});
+		//var content = route(handle, pathname);
+		//res.write(content);
+		//res.end();
+		route(handle, pathname, res);
 	}
 
 	http.createServer(onRequest).listen(8080);
